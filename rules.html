@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قوانين اللعبة</title>
+    <link rel="icon" type="image/jpeg" href="photo.jpg">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('photo.jpg') no-repeat center center/cover;
+            color: black;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 10px rgba(255,255,255,0.4);
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        nav a {
+            color: black;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #555;
+        }
+        hr {
+            border: none;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.7);
+            margin: 0;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .rules-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 500px;
+        }
+        .rule {
+            font-size: 18px;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        .countdown-text {
+            font-size: 16px;
+            font-weight: bold;
+            background: rgba(255,255,255,0.9);
+            padding: 6px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-links">
+            <a href="home.html" target="_blank">الرئيسية</a>
+            <a href="aqtrahat.html" target="_blank">اقتراحات</a>
+        </div>
+        <div class="countdown-text" id="countdown">
+            الوقت المتبقي على التحديث: -- يوم : -- ساعة : -- دقيقة : -- ثانية
+        </div>
+    </nav>
+    <hr>
+
+    <div class="container">
+        <div class="rules-box">
+            <h2>⚖️ قوانين اللعبة (Rules)</h2>
+            <div class="rule">🚫 ممنوع الغش أو استغلال الثغرات (Glitches).</div>
+            <div class="rule">🚫 ممنوع إزعاج أو سب اللاعبين الآخرين.</div>
+            <div class="rule">✅ اللعب النظيف يضمن لك المتعة للجميع.</div>
+            <div class="rule">⚠️ أي مخالفة ممكن تسبب طرد مؤقت أو دائم.</div>
+        </div>
+    </div>
+
+    <script>
+        function getNextSundayAtTenPM() {
+            let now = new Date();
+            let result = new Date();
+            result.setHours(22, 0, 0, 0);
+            
+            let daysUntilSunday = (7 - now.getDay()) % 7;
+            if (daysUntilSunday === 0 && now.getTime() >= result.getTime()) {
+                daysUntilSunday = 7; 
+            }
+            result.setDate(now.getDate() + daysUntilSunday);
+            return result;
+        }
+
+        function updateCountdown() {
+            let targetDate = getNextSundayAtTenPM();
+            let now = new Date();
+            let diff = targetDate - now;
+
+            let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerText = 
+                `الوقت المتبقي على التحديث: ${days} يوم : ${hours.toString().padStart(2,'0')} ساعة : ${minutes.toString().padStart(2,'0')} دقيقة : ${seconds.toString().padStart(2,'0')} ثانية`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+
+</body>
+</html>

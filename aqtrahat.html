@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اقتراحات</title>
+    <link rel="icon" type="image/jpeg" href="photo.jpg">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('photo.jpg') no-repeat center center/cover;
+            color: black;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 10px rgba(255,255,255,0.4);
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        nav a {
+            color: black;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #555;
+        }
+        hr {
+            border: none;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.7);
+            margin: 0;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-box input, 
+        .form-box textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+        }
+        .form-box button {
+            background-color: #5865F2;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .form-box button:hover {
+            background-color: #4752C4;
+        }
+        .countdown-text {
+            font-size: 16px;
+            font-weight: bold;
+            background: rgba(255,255,255,0.9);
+            padding: 6px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-links">
+            <a href="home.html" target="_blank">الرئيسية</a>
+            <a href="rules.html" target="_blank">قوانين</a>
+        </div>
+        <div class="countdown-text" id="countdown">
+            الوقت المتبقي على التحديث: -- يوم : -- ساعة : -- دقيقة : -- ثانية
+        </div>
+    </nav>
+    <hr>
+
+    <div class="container">
+        <div class="form-box">
+            <form action="https://formspree.io/f/mrbljaaq" method="POST" target="_blank">
+                <input type="text" name="name" placeholder="الاسم" required>
+                <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+                <textarea name="message" placeholder="اكتب اقتراحك هنا..." rows="5" required></textarea>
+                <button type="submit">إرسال الاقتراح</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function getNextSundayAtTenPM() {
+            let now = new Date();
+            let result = new Date();
+            result.setHours(22, 0, 0, 0);
+            
+            let daysUntilSunday = (7 - now.getDay()) % 7;
+            if (daysUntilSunday === 0 && now.getTime() >= result.getTime()) {
+                daysUntilSunday = 7; 
+            }
+            result.setDate(now.getDate() + daysUntilSunday);
+            return result;
+        }
+
+        function updateCountdown() {
+            let targetDate = getNextSundayAtTenPM();
+            let now = new Date();
+            let diff = targetDate - now;
+
+            let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerText = 
+                `الوقت المتبقي على التحديث: ${days} يوم : ${hours.toString().padStart(2,'0')} ساعة : ${minutes.toString().padStart(2,'0')} دقيقة : ${seconds.toString().padStart(2,'0')} ثانية`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+
+</body>
+</html>
